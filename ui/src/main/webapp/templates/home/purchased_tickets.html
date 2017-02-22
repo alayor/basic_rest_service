@@ -1,0 +1,23 @@
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{'NAME' | translate}}</th>
+                <th>{{'EMAIL' | translate}}</th>
+                <th>{{'AMOUNT' | translate}}</th>
+                <th>{{'FROM' | translate}}</th>
+                <th>{{'TO' | translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="ticket in purchased_tickets">
+                <td>{{ticket.user.name}}</td>
+                <td>{{ticket.user.email}}</td>
+                <td>{{ticket.purchasedTicket.currency}} {{ticket.purchasedTicket.amount}}</td>
+                <td>{{ticket.purchasedTicket.from}}</td>
+                <td>{{ticket.purchasedTicket.to}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-include="'/templates/common/messageHandling.html'"></div>
+</div>

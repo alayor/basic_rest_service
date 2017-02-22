@@ -1,0 +1,17 @@
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{'NAME' | translate}}</th>
+                <th>{{'EMAIL' | translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in users">
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-include="'/templates/common/messageHandling.html'"></div>
+</div>

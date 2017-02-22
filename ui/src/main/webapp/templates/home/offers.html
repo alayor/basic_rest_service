@@ -1,0 +1,43 @@
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{'AMOUNT' | translate}}</th>
+                <th>{{'FROM' | translate}}</th>
+                <th>{{'TO' | translate}}</th>
+                <th>{{'QUANTITY' | translate}}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="offer in offers">
+                <td>{{offer.currency}} {{offer.amount}}</td>
+                <td>{{offer.from}}</td>
+                <td>{{offer.to}}</td>
+                <td><input type="number" name="purchase_button_{{$index}}" ng-show="!offer.purchased" id="quantity_{{$index}}" value="1"></td>
+                <td>
+                    <label id="purchase_label_{{$index}}" ng-show="offer.purchased" >Ticket Purchased!</label>
+                    <button id="purchase_button_{{$index}}" type="submit" class="btn btn-primary"
+                            ng-show="!offer.purchased"
+                            ng-click="buyTicket($index)">{{'BUY_TICKET' | translate}}
+                    </button>
+                </td>
+                <td>
+                    <button id="send_email_{{$index}}" type="submit" class="btn btn-primary"
+                            ng-show="offer.purchased"
+                            ng-click="sendEmail($index)">{{'SEND_EMAIL' | translate}}
+                    </button>
+                </td>
+                <td>
+                    <button id="download_pdf_{{$index}}" type="submit" class="btn btn-primary"
+                            ng-show="offer.purchased"
+                            ng-click="downloadPdf($index)">{{'DOWNLOAD_PDF' | translate}}
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-include="'/templates/common/messageHandling.html'"></div>
+</div>
