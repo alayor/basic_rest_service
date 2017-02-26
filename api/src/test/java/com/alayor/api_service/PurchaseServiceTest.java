@@ -3,10 +3,8 @@ package com.alayor.api_service;
 import com.alayor.api_service.model.entities.PurchasedTicket;
 import com.alayor.api_service.model.entities.User;
 import com.alayor.api_service.model.requests.BuyTicketRQ;
-import com.alayor.api_service.support.AirlineServiceClient;
 import com.alayor.api_service.support.PurchasedTicketRepository;
 import com.alayor.api_service.support.UserRepository;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,30 +19,24 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PurchaseServiceTest
-{
+public class PurchaseServiceTest {
 
     private PurchaseService purchaseService;
     @Mock
     private PurchasedTicketRepository purchasedTicketRepository;
-    @Mock
-    private AirlineServiceClient airlineServiceClient;
     @Mock
     private UserRepository userRepository;
     @Mock
     private User user;
 
     @Before
-    public void setUp() throws Exception
-    {
-        purchaseService = new PurchaseService(purchasedTicketRepository, airlineServiceClient, userRepository);
+    public void setUp() throws Exception {
+        purchaseService = new PurchaseService(purchasedTicketRepository, userRepository);
     }
 
     @Test
-    public void shouldSavePurchasedTicketIntoDb()
-    {
+    public void shouldSavePurchasedTicketIntoDb() {
         //given
-        given(airlineServiceClient.buyTicket(anyString(), anyString(), anyString(), anyString())).willReturn(new JSONObject("{amount: 100}"));
         given(purchasedTicketRepository.insert(any(PurchasedTicket.class))).willReturn(1L);
         given(userRepository.getUserById(anyString())).willReturn(of(user));
 
@@ -56,66 +48,41 @@ public class PurchaseServiceTest
     }
 
     @Test
-    public void shouldThrowExceptionIfBoughtTicketHasNoAmount()
-    {
+    public void shouldThrowExceptionIfBoughtTicketHasNoAmount() {
         //given
-        given(airlineServiceClient.buyTicket(anyString(), anyString(), anyString(), anyString())).willReturn(new JSONObject("{}"));
         given(purchasedTicketRepository.insert(any(PurchasedTicket.class))).willReturn(1L);
         given(userRepository.getUserById(anyString())).willReturn(of(user));
 
         //when
-        try
-        {
+        try {
             purchaseService.buyTicket(createBuyTicket());
         }
 
         //then
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             assertEquals("Ticket was not purchased successfully. Please contact our support department.", ex.getMessage());
         }
     }
 
     @Test
-    public void shouldSendBuyRequestToAirlineService()
-    {
+    public void shouldThrowExceptionIfPurchasedTicketCouldNotBeSaved() {
         //given
-        given(airlineServiceClient.buyTicket(anyString(), anyString(), anyString(), anyString())).willReturn(new JSONObject("{amount: 100}"));
-        given(purchasedTicketRepository.insert(any(PurchasedTicket.class))).willReturn(1L);
-        given(userRepository.getUserById(anyString())).willReturn(of(user));
-        given(user.getAccountId()).willReturn("1234");
-
-        //when
-        purchaseService.buyTicket(createBuyTicket());
-
-        //then
-        verify(airlineServiceClient).buyTicket("1234", "2", "London", "Madrid");
-    }
-
-    @Test
-    public void shouldThrowExceptionIfPurchasedTicketCouldNotBeSaved()
-    {
-        //given
-        given(airlineServiceClient.buyTicket(anyString(), anyString(), anyString(), anyString())).willReturn(new JSONObject("{amount: 100}"));
         given(userRepository.getUserById(anyString())).willReturn(of(user));
         given(user.getAccountId()).willReturn("1234");
         given(purchasedTicketRepository.insert(any(PurchasedTicket.class))).willReturn(0L);
 
         //when
-        try
-        {
+        try {
             purchaseService.buyTicket(createBuyTicket());
         }
 
         //then
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             assertEquals("Ticket was not purchased successfully. Please contact our support department.", ex.getMessage());
         }
     }
 
-    private BuyTicketRQ createBuyTicket()
-    {
+    private BuyTicketRQ createBuyTicket() {
         return new BuyTicketRQ("1", "1000", "USD", "London", "Madrid", "2");
     }
 }

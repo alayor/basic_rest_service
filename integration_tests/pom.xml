@@ -20,11 +20,6 @@
     </dependency>
     <dependency>
       <groupId>com.alayor</groupId>
-      <artifactId>airline_service_client</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.alayor</groupId>
       <artifactId>api_service</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
@@ -37,11 +32,6 @@
       <groupId>org.apache.derby</groupId>
       <artifactId>derbyclient</artifactId>
       <version>10.13.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.alayor</groupId>
-      <artifactId>api_service</artifactId>
-      <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
@@ -73,13 +63,6 @@
                 </script>
               </sources>
             </configuration>
-          </execution>
-          <execution>
-            <id>stop</id>
-            <goals>
-              <goal>stop</goal>
-            </goals>
-            <phase>install</phase>
           </execution>
         </executions>
       </plugin>

@@ -9,7 +9,6 @@
 		<module>tools</module>
 		<module>core</module>
 		<module>api_service</module>
-		<module>airline_service_client</module>
 		<module>integration_tests</module>
 		<module>api</module>
 		<module>ui</module>

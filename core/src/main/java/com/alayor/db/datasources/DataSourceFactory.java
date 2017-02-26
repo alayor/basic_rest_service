@@ -10,12 +10,21 @@ public class DataSourceFactory
 {
     public DriverManagerDataSource createDataSource()
     {
+        return create("dev");
+    }
+
+    private DriverManagerDataSource create(String env) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         PropertyManager propertyManager = new PropertyManager("core.properties");
-        dataSource.setDriverClassName(propertyManager.getProperty("dev" + ".driver_class"));
-        dataSource.setUsername(propertyManager.getProperty("dev" + ".db_user"));
-        dataSource.setPassword(propertyManager.getProperty("dev" + ".db_password"));
-        dataSource.setUrl(propertyManager.getProperty("db_url") + propertyManager.getProperty("dev" + ".database"));
+        dataSource.setDriverClassName(propertyManager.getProperty(env + ".driver_class"));
+        dataSource.setUsername(propertyManager.getProperty(env + ".db_user"));
+        dataSource.setPassword(propertyManager.getProperty(env + ".db_password"));
+        dataSource.setUrl(propertyManager.getProperty(env + ".db_url") + propertyManager.getProperty(env + ".database"));
         return dataSource;
+    }
+
+    public DriverManagerDataSource createDataSourceForTests()
+    {
+        return create("test");
     }
 }
